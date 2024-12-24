@@ -180,7 +180,10 @@ checkoutBtn.addEventListener("click", function () {
 
     cart = [];
     updateCartModal();
-
+    
+    setTimeout(() => {
+        cartModal.style.display = "none"
+    }, 2000);
 })
 
 //Verifica e manipua o card do hrário
