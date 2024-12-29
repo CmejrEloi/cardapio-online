@@ -65,6 +65,8 @@ function addToCart(name, price) {
     updateCartModal()
 }
 
+
+
 // função atualizar carrinho
 function updateCartModal() {
     cartItensConteiner.innerHTML = ""
@@ -78,13 +80,21 @@ function updateCartModal() {
 
             cartItemElement.innerHTML = `
             <div class="flex items-center justify-between border border-b-[3px] border-gray-400 p-2">
-                <div>
+                <div style="width: 350px">
                     <p class="font-bold">${item.name}</p>
                     <p>Qtd: ${item.quantity}</p>
                     <p class="font-medium mt-2">R$ ${item.price.toFixed(2)}</p>
                 </div>
-                
-                <button class="remove-from-cart-btn" data-name="${item.name}">Remover</button>
+                <div>
+                    <button class="bg-gray-900 px-5 rounded remove-from-cart-btn" data-name="${item.name}">
+                        <i class="fa fa-trash text-lg text-white"></i>
+                    </button>
+                </div>
+                <div>
+                    <button class="bg-gray-900 px-5 rounded add-from-cart-btn" data-name="${item.name}" data-price="${item.price}" data-quantity="${item.quantity}">
+                        <i class="fa fa-cart-plus text-lg text-white"></i>
+                    </button>
+                </div>
             </div>
         `;
 
@@ -108,6 +118,27 @@ cartItensConteiner.addEventListener("click", function (e) {
         removeItemCart(name)
     }
 })
+
+//Adicionando itens no carrinho dentro do modal
+cartItensConteiner.addEventListener("click", function (e) {
+    console.log(e.target)
+
+    let parentButton = e.target.closest(".add-from-cart-btn")
+
+    if (parentButton.classList.contains("add-from-cart-btn")) {
+        const quantity = e.target.getAttribute("data-quantity");
+        const name = e.target.getAttribute("data-name");
+        const price = e.target.getAttribute("data-price");
+        updateCartInModal(name, price, quantity)
+    }
+})
+
+function updateCartInModal(name, price, quantity){
+    quantity++;
+    addToCart(name, price)
+    updateCartModal()
+    console.log("Quantidade: " + quantity)
+}
 
 function removeItemCart(name) {
     const index = cart.findIndex(item => item.name === name);
@@ -174,7 +205,7 @@ checkoutBtn.addEventListener("click", function () {
     }).join("")
 
     const message = encodeURIComponent(cartItems)
-    const phone = "49999345088"
+    const phone = "49999675109"
 
     window.open(`https://wa.me/${phone}?text=${message} Endereço: ${addressInput.value}`, "_blank")
 
